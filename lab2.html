@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width">
+    <title>Лабороторная №2</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="card bg-grey">
+        <h2>Код:
+            </h2>
+        <p><textarea cols="80" rows="35">
+            from fastapi import FastAPI
+            import wikipedia
+            app = FastAPI()
+
+            from pydantic import BaseModel
+
+            class Wiki1(BaseModel):
+                result: list[str]
+
+
+
+            @app.get("/wiki1/{request}", response_model=Wiki1)
+            def Search(request: str):
+                """Создание запроса"""
+                return Wiki1(result= wikipedia.search(request))
+
+            class Wiki2(BaseModel):
+                result1: str
+            @app.get("/wiki2", response_model=Wiki2)
+            def Search(request: str):
+                """Создание запроса"""
+                return Wiki2(result1 = wikipedia.page(request).url)
+
+            class Wiki3(BaseModel):
+                result2: str
+
+            class WikiInput(BaseModel):
+                request: str
+
+
+            @app.post("/", response_model=Wiki3)
+            def Search(request_input: WikiInput):
+                """Создание запроса"""
+                return Wiki3(result2 = wikipedia.summary(request_input.request))
+
+        </textarea></p>
+
+    </div>
+    <div class="card bg-grey">
+        <h2>Скриншот сваггера:</h2>
+        <img src="screen.jpg" width="900" alt="тут скрин">
+
+    </div>
+    
+</body>
+</html>
